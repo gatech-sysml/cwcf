@@ -41,9 +41,11 @@ class Log:
             for i in range(self.LEN):
                 w = q[i].data
 
+                # TODO: Subfolder output
                 for k in w:
                     self.files[i].write("%.4f " % k)
 
+                # TODO: Subfolder output
                 self.files[i].write("\n")
                 self.files[i].flush()
 

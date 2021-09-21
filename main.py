@@ -119,7 +119,7 @@ if config.PRETRAIN and config.BLANK_INIT:
     brain.pretrain(env)
     # TODO: Subfolder for output
     brain._save(file="model_pretrained")
-# brain._load(file="model_pretrained")
+    # brain._load(file="model_pretrained")
 
 # ==============================
 agent.update_epsilon(epoch_start)
