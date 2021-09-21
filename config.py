@@ -22,7 +22,7 @@ class Config:
         self.DATA_VAL_FILE = "data/" + dataset.DATASET + "-val"
         self.DATA_TEST_FILE = "data/" + dataset.DATASET + "-test"
         self.META_FILE = "data/" + dataset.DATASET + "-meta"
-        self.HPC_FILE = "data/" + dataset.DATASET + "-hpc"
+        self.HPC_FILE = "trained_hpc/" + dataset.DATASET + "-hpc"
 
         self.CLASSES = dataset.CLASSES
         self.FEATURE_DIM = dataset.FEATURES
