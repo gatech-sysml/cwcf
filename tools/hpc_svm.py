@@ -8,6 +8,9 @@ import pandas as pd
 import numpy as np
 
 import argparse
+
+from pathlib import Path
+
 #----------------
 META_AVG   = 'avg'
 META_STD   = 'std'
@@ -49,7 +52,7 @@ def prep(data):
 
 #----------------
 parser = argparse.ArgumentParser()
-parser.add_argument('-dataset', required=True, help="dataset name")
+parser.add_argument('--dataset', required=True, help="dataset name")
 parser.add_argument('-svmgamma', type=float, help="SVM gamma parameter")
 parser.add_argument('-svmc', type=float, help="SVM C parameter")
 
@@ -57,11 +60,13 @@ args = parser.parse_args()
 
 DATASET = args.dataset
 
-DATA_FILE = '../../data/' + DATASET + '-train'
-VAL_FILE  = '../../data/' + DATASET + '-val'
-TEST_FILE = '../../data/' + DATASET + '-test'
-META_FILE = '../../data/' + DATASET + '-meta'
-HPC_FILE = '../../data/' + DATASET + '-hpc'
+FILE_PATH = Path.cwd()
+
+DATA_FILE = str(FILE_PATH / 'data' / DATASET) + '-train'
+VAL_FILE  = str(FILE_PATH / 'data' / DATASET) + '-val'
+TEST_FILE = str(FILE_PATH / 'data' / DATASET) + '-test'
+META_FILE = str(FILE_PATH / 'data' / DATASET) + '-meta'
+HPC_FILE = str(FILE_PATH / 'data' / DATASET) + '-hpc'
 
 print("Using dataset", DATASET)
 #----------------
