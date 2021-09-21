@@ -4,7 +4,7 @@ CLASSES  = 10
 FEATURES = 400
 
 NN_SIZE    = 512
-DIFFICULTY = 10000
+DIFFICULTY = 10 #Default: 10000
 
 class Override():
     def __init__(self):
