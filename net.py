@@ -2,6 +2,7 @@ from config import config
 
 import torch
 import torch.nn.functional as F
+torch.cuda.set_device(7)
 
 #==============================
 class Net(torch.nn.Module):
