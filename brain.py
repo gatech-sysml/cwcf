@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+torch.cuda.set_device(7)
 
 from config import config
 
