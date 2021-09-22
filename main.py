@@ -18,7 +18,6 @@ def str2bool(v):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", required=True, help="dataset name")
-
 parser.add_argument("--flambda", type=float, required=True, help="cost factor lambda")
 parser.add_argument("--seed", type=int, default=None, help="random seed")
 
@@ -105,7 +104,9 @@ if not config.BLANK_INIT:
     print("Loading progress..")
     brain._load()
 
-    with open('run.state.lambda{}'.format(args.flambda), 'r') as file:
+    with open(
+        f"run.state.lambda{args.flambda}.hpc{args.use_hpc}.pretrain{args.pretrain}", "r"
+    ) as file:
         save_data = json.load(file)
 
     epoch_start = save_data["epoch"]
@@ -116,7 +117,9 @@ if not config.BLANK_INIT:
 if config.PRETRAIN and config.BLANK_INIT:
     print("Pretraining..")
     brain.pretrain(env)
-    brain._save(file="model_pretrained_lambda{}".format(args.flambda))
+    brain._save(
+        file=f"model_pretrained_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}"
+    )
 # brain._load(file="model_pretrained")
 
 # ==============================
@@ -147,7 +150,10 @@ for epoch in range(epoch_start, config.MAX_TRAINING_EPOCHS + 1):
         save_data["lr"] = brain.lr
         save_data["avg_r"] = avg_r.__dict__
 
-        with open('run.state.lambda{}'.format(args.flambda), 'w') as file:
+        with open(
+            f"run.state.lambda{args.flambda}.hpc{args.use_hpc}.pretrain{args.pretrain}",
+            "w",
+        ) as file:
             json.dump(save_data, file)
 
     # update exploration
@@ -203,7 +209,9 @@ for epoch in range(epoch_start, config.MAX_TRAINING_EPOCHS + 1):
         if val_avg_last > avg_r.val_best:
             avg_r.val_fails = 0
             avg_r.val_best = val_avg_last
-            brain._save(file='model_best_{}_lambda{}'.format(args.dataset, args.flambda))
+            brain._save(
+                file=f"model_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}"
+            )
         else:
             avg_r.val_fails += 1
             print(
@@ -229,11 +237,29 @@ data_tst[feats] = (data_tst[feats] - meta[config.META_AVG]) / meta[
 
 brain._load(file="model_best")
 print("Performance on the best model:")
-log_trn = Log(data_trn, hpc['train'], costs, brain, "trn_best_{}_lambda{}".format(args.dataset, args.flambda))
+log_trn = Log(
+    data_trn,
+    hpc["train"],
+    costs,
+    brain,
+    f"trn_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}",
+)
 log_trn.log_perf()
 
-log_val = Log(data_val, hpc['validation'], costs, brain, "val_best_{}_lambda{}".format(args.dataset, args.flambda))
+log_val = Log(
+    data_val,
+    hpc["validation"],
+    costs,
+    brain,
+    f"val_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}",
+)
 log_val.log_perf()
 
-log_tst = Log(data_tst, hpc['test'], costs, brain, "tst_best_{}_lambda{}".format(args.dataset, args.flambda))
+log_tst = Log(
+    data_tst,
+    hpc["test"],
+    costs,
+    brain,
+    f"tst_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}",
+)
 log_tst.log_perf(histogram=True)
