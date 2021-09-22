@@ -235,7 +235,7 @@ data_tst[feats] = (data_tst[feats] - meta[config.META_AVG]) / meta[
     config.META_STD
 ]  # normalize
 
-brain._load(file="model_best")
+brain._load(file=f"model_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}")
 print("Performance on the best model:")
 log_trn = Log(
     data_trn,
