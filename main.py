@@ -105,8 +105,7 @@ if not config.BLANK_INIT:
     print("Loading progress..")
     brain._load()
 
-    # TODO: Subfolder for output
-    with open("run.state", "r") as file:
+    with open('run.state.lambda{}'.format(args.flambda), 'r') as file:
         save_data = json.load(file)
 
     epoch_start = save_data["epoch"]
@@ -117,9 +116,8 @@ if not config.BLANK_INIT:
 if config.PRETRAIN and config.BLANK_INIT:
     print("Pretraining..")
     brain.pretrain(env)
-    # TODO: Subfolder for output
-    brain._save(file="model_pretrained")
-    # brain._load(file="model_pretrained")
+    brain._save(file="model_pretrained_lambda{}".format(args.flambda))
+# brain._load(file="model_pretrained")
 
 # ==============================
 agent.update_epsilon(epoch_start)
@@ -149,8 +147,7 @@ for epoch in range(epoch_start, config.MAX_TRAINING_EPOCHS + 1):
         save_data["lr"] = brain.lr
         save_data["avg_r"] = avg_r.__dict__
 
-        # TODO: Subfolder for output
-        with open("run.state", "w") as file:
+        with open('run.state.lambda{}'.format(args.flambda), 'w') as file:
             json.dump(save_data, file)
 
     # update exploration
@@ -206,8 +203,7 @@ for epoch in range(epoch_start, config.MAX_TRAINING_EPOCHS + 1):
         if val_avg_last > avg_r.val_best:
             avg_r.val_fails = 0
             avg_r.val_best = val_avg_last
-            # TODO: Subfolder for output
-            brain._save(file="model_best")
+            brain._save(file='model_best_{}_lambda{}'.format(args.dataset, args.flambda))
         else:
             avg_r.val_fails += 1
             print(
@@ -233,11 +229,11 @@ data_tst[feats] = (data_tst[feats] - meta[config.META_AVG]) / meta[
 
 brain._load(file="model_best")
 print("Performance on the best model:")
-log_trn = Log(data_trn, hpc["train"], costs, brain, "trn_best")
+log_trn = Log(data_trn, hpc['train'], costs, brain, "trn_best_{}_lambda{}".format(args.dataset, args.flambda))
 log_trn.log_perf()
 
-log_val = Log(data_val, hpc["validation"], costs, brain, "val_best")
+log_val = Log(data_val, hpc['validation'], costs, brain, "val_best_{}_lambda{}".format(args.dataset, args.flambda))
 log_val.log_perf()
 
-log_tst = Log(data_tst, hpc["test"], costs, brain, "tst_best")
+log_tst = Log(data_tst, hpc['test'], costs, brain, "tst_best_{}_lambda{}".format(args.dataset, args.flambda))
 log_tst.log_perf(histogram=True)
