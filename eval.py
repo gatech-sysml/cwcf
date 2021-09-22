@@ -23,6 +23,12 @@ parser.add_argument(
     default=True,
     help="Whether to use High Precision Classifier",
 )
+parser.add_argument(
+    "--pretrain",
+    type=str2bool,
+    default=True,
+    help="Whether to pretrain classification actions",
+)
 args = parser.parse_args()
 
 args.seed = None
@@ -37,7 +43,6 @@ from brain import Brain
 from log import Log
 
 # ==============================
-# TODO: Subfolder for output
 data_trn = pd.read_pickle(config.DATA_FILE)
 data_val = pd.read_pickle(config.DATA_VAL_FILE)
 data_tst = pd.read_pickle(config.DATA_TEST_FILE)
@@ -61,8 +66,7 @@ data_tst[feats] = (data_tst[feats] - meta[config.META_AVG]) / meta[
 print("Evaluating dataset:", args.dataset)
 
 brain = Brain(None)
-# TODO: Subfolder for output
-brain._load(file="model_best")
+brain._load(file=f"model_best_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}")
 
 print("Performance on the best model:")
 log_trn = Log(data_trn, hpc["train"], costs, brain, "trn_best")

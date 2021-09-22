@@ -20,12 +20,10 @@ class Brain:
         print("Network architecture:\n" + str(self.model))
 
     def _load(self, file="model"):
-        # TODO: Subfolder for output
         self.model.load_state_dict(torch.load(file))
         self.model_.load_state_dict(torch.load(file + "_"))
 
     def _save(self, file="model"):
-        # TODO: Subfolder for output
         torch.save(self.model.state_dict(), file)
         torch.save(self.model_.state_dict(), file + "_")
 

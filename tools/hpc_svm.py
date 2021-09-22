@@ -113,7 +113,6 @@ train_p = model.predict(train_x)
 val_p = model.predict(val_x)
 test_p = model.predict(test_x)
 
-# TODO: Subfolder output
 data_p = pd.DataFrame(
     data=[train_p, val_p, test_p], index=["train", "validation", "test"]
 ).transpose()

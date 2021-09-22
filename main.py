@@ -102,7 +102,7 @@ avg_r.val_fails = 0
 
 if not config.BLANK_INIT:
     print("Loading progress..")
-    brain._load()
+    brain._load(f"model_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}")
 
     with open(
         f"run.state.lambda{args.flambda}.hpc{args.use_hpc}.pretrain{args.pretrain}", "r"
@@ -120,7 +120,6 @@ if config.PRETRAIN and config.BLANK_INIT:
     brain._save(
         file=f"model_pretrained_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}"
     )
-# brain._load(file="model_pretrained")
 
 # ==============================
 agent.update_epsilon(epoch_start)
@@ -142,8 +141,7 @@ print("\nStarting..")
 for epoch in range(epoch_start, config.MAX_TRAINING_EPOCHS + 1):
     # save progress
     if utils.is_time(epoch, config.SAVE_EPOCHS):
-        # TODO: Subfolder for output
-        brain._save()
+        brain._save(f"model_{args.dataset}_lambda{args.flambda}_hpc{args.use_hpc}_pretrain{args.pretrain}")
 
         save_data = {}
         save_data["epoch"] = epoch

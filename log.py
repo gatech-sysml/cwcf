@@ -41,11 +41,9 @@ class Log:
             for i in range(self.LEN):
                 w = q[i].data
 
-                # TODO: Subfolder output
                 for k in w:
                     self.files[i].write("%.4f " % k)
 
-                # TODO: Subfolder output
                 self.files[i].write("\n")
                 self.files[i].flush()
 
@@ -133,12 +131,12 @@ class Log:
             _lens_hpc = np.concatenate(_lens_hpc).flatten()
 
             # print("Writing histogram...")
-            # TODO: Subfolder for output
+            # TODO: string pattern should match main.py
             with open("run_{}_histogram.dat".format(self.log_name), "w") as file:
                 for x in _lens:
                     file.write("{} ".format(x))
 
-            # TODO: Subfolder for output
+            # TODO: string pattern should match main.py
             with open("run_{}_histogram_hpc.dat".format(self.log_name), "w") as file:
                 for x in _lens_hpc:
                     file.write("{} ".format(x))
